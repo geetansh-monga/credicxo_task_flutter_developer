@@ -1,0 +1,32 @@
+import 'dart:async';
+import 'package:connectivity/connectivity.dart';
+
+class ConnectivityClass {
+  bool _status;
+
+  Connectivity _connectivity = Connectivity();
+
+  StreamController<bool> statusController = StreamController.broadcast();
+
+  void observeConnectivity() {
+    _connectivity
+        .checkConnectivity()
+        .asStream()
+        .listen((ConnectivityResult result) {
+      if (result == ConnectivityResult.mobile ||
+          result == ConnectivityResult.wifi) {
+        _status = true;
+        statusController.sink.add(_status);
+      } else {
+        _status = false;
+        statusController.sink.add(_status);
+      }
+    });
+  }
+
+  void dispose() {
+    statusController.close();
+  }
+}
+
+ConnectivityClass connectivityBloc = ConnectivityClass();
