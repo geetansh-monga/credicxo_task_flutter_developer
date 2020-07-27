@@ -9,10 +9,7 @@ class ConnectivityClass {
   StreamController<bool> statusController = StreamController.broadcast();
 
   void observeConnectivity() {
-    _connectivity
-        .checkConnectivity()
-        .asStream()
-        .listen((ConnectivityResult result) {
+    _connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
       if (result == ConnectivityResult.mobile ||
           result == ConnectivityResult.wifi) {
         _status = true;
